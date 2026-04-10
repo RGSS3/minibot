@@ -121,13 +121,28 @@ TOOLS = {
     "exec": (exec_, ExecParams),
 }
 
+TOOL_GROUPS = {
+    "basic": ["get_weather", "read", "write", "patch", "exec"],
+    "read": ["read"],
+    "write": ["write"],
+    "patch": ["patch"],
+    "exec": ["exec"],
+}
+
 
 def get_tool_schemas():
     """获取所有工具的 schema"""
     schemas = {}
     for name, (func, model_cls) in TOOLS.items():
+        raw_schema = model_cls.model_json_schema()
+        schema = {
+            "type": "object",
+            "properties": raw_schema.get("properties", {}),
+            "required": raw_schema.get("required", []),
+        }
         schemas[name] = {
+            "name": name,
             "description": func.__doc__.strip(),
-            "parameters": model_cls.model_json_schema(),
+            "parameters": schema,
         }
     return schemas
