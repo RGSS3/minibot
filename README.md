@@ -1,6 +1,6 @@
 # MiniBot
 
-基于 OpenRouter 的轻量级 CLI 对话工具。
+Agent Demo
 
 ## 快速开始
 
